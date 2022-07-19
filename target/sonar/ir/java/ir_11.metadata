@@ -1,0 +1,5 @@
+com.project.application.service.AuthorityServiceImplementation#makeManagerAuthority(Lcom/project/application/entity/User;)V
+com.project.application.entity.Authority#<init>(Lcom/project/application/entity/id/AuthorityId;)V
+com.project.application.entity.Authority#instance-init#
+com.project.application.entity.id.AuthorityId#instance-init#
+com.project.application.entity.id.AuthorityId#<init>(Lcom/project/application/entity/User;Ljava/lang/String;)V

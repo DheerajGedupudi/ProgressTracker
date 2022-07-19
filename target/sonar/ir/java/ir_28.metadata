@@ -1,0 +1,6 @@
+com.project.application.service.UserServiceImplementation#getOnlyEmployees()Ljava/util/List;
+java.util.HashSet#<init>(Ljava/util/Collection;)V
+java.lang.String#equals(Ljava/lang/Object;)Z
+java.util.ArrayList#instance-init#
+java.util.ArrayList#<init>(Ljava/util/Collection;)V
+java.util.HashSet#instance-init#

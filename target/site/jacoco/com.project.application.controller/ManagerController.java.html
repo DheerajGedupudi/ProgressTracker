@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ManagerController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringProject</a> &gt; <a href="index.source.html" class="el_package">com.project.application.controller</a> &gt; <span class="el_source">ManagerController.java</span></div><h1>ManagerController.java</h1><pre class="source lang-java linenums">package com.project.application.controller;
+
+import com.project.application.dto.NewManager;
+import com.project.application.entity.User;
+import com.project.application.entity.UserDetail;
+import com.project.application.service.AuthorityService;
+import com.project.application.service.UserDetailService;
+import com.project.application.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
+
+@Controller
+@RequestMapping(&quot;/manager/managers&quot;)
+<span class="fc" id="L19">public class ManagerController</span>
+{
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserDetailService userDetailService;
+
+    @Autowired
+    private AuthorityService authorityService;
+
+    @GetMapping(&quot;/list&quot;)
+    public String listTheEmployees(Model myModel)
+    {
+<span class="nc" id="L33">        List&lt;User&gt; details = userService.getManagers();</span>
+
+<span class="nc" id="L35">        myModel.addAttribute(&quot;employees&quot;, details);</span>
+
+<span class="nc" id="L37">        return &quot;list-managers&quot;;</span>
+    }
+
+    @GetMapping(&quot;/makeManager&quot;)
+    public String showFormToAdd(Model myModel)
+    {
+<span class="nc" id="L43">        List&lt;User&gt; employeeList = userService.getOnlyEmployees();</span>
+
+<span class="nc" id="L45">        NewManager newManager = new NewManager();</span>
+
+<span class="nc" id="L47">        myModel.addAttribute(&quot;employeeList&quot;, employeeList);</span>
+
+<span class="nc" id="L49">        myModel.addAttribute(&quot;newManager&quot;, newManager);</span>
+
+<span class="nc" id="L51">        return &quot;make-employee-manager&quot;;</span>
+    }
+
+    @PostMapping(&quot;/save&quot;)
+    public String saveEmployee(@ModelAttribute(&quot;employeeName&quot;) NewManager newManager)
+    {
+<span class="nc" id="L57">        User user = userService.getUserInfo(newManager.getManagerUsername());</span>
+
+<span class="nc" id="L59">        authorityService.makeManagerAuthority(user);</span>
+
+<span class="nc" id="L61">        return &quot;redirect:/manager/managers/list&quot;;</span>
+    }
+
+
+    @GetMapping(&quot;/demote/{username}&quot;)
+    public String demoteManager(@PathVariable String username, Principal myPrincipal)
+    {
+<span class="nc" id="L68">        String currentUsername = myPrincipal.getName();</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (currentUsername.equals(username))</span>
+        {
+<span class="nc" id="L71">            return &quot;cannot-demote-user&quot;;</span>
+        }
+<span class="nc" id="L73">        User user = userService.getUserInfo(username);</span>
+
+<span class="nc" id="L75">        authorityService.removeManagerAuthority(user);</span>
+
+<span class="nc" id="L77">        return &quot;redirect:/manager/managers/list&quot;;</span>
+    }
+
+    @GetMapping(&quot;/showFormToUpdate&quot;)
+    public String showFormToUpdate(@RequestParam(&quot;employeeId&quot;) String username, Model myModel)
+    {
+<span class="nc" id="L83">        User myDetail = userService.getUser(username);</span>
+
+<span class="nc" id="L85">        myModel.addAttribute(&quot;employee&quot;, myDetail);</span>
+
+<span class="nc" id="L87">        return &quot;employee-form&quot;;</span>
+    }
+
+    @GetMapping(&quot;/delete/{username}&quot;)
+    public String delete(@PathVariable String username, Principal myPrincipal)
+    {
+<span class="nc" id="L93">        String currentUsername = myPrincipal.getName();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (currentUsername.equals(username))</span>
+        {
+<span class="nc" id="L96">            return &quot;cannot-delete-user&quot;;</span>
+        }
+
+<span class="nc" id="L99">        UserDetail myUserDetail = userService.getUserDetailId(username);</span>
+<span class="nc" id="L100">        User myUser = userService.getUser(username);</span>
+        //delete
+<span class="nc" id="L102">        authorityService.deleteAllAuthoritiesOf(myUser);</span>
+<span class="nc" id="L103">        userService.deleteUser(myUser);</span>
+<span class="nc" id="L104">        userDetailService.deleteDetail(myUserDetail);</span>
+
+<span class="nc" id="L106">        return &quot;redirect:/manager/list&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

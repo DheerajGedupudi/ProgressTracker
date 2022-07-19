@@ -1,0 +1,7 @@
+organization=dheeraj-zemoso
+projectKey=springProject
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.30262
+dashboardUrl=https://sonarcloud.io/dashboard?id=springProject
+ceTaskId=AYIBlheBmSb_H3Jtau3W
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AYIBlheBmSb_H3Jtau3W

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.project.demo.config</a> &gt; <span class="el_source">AppConfiguration.java</span></div><h1>AppConfiguration.java</h1><pre class="source lang-java linenums">package com.project.demo.config;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
+import java.util.Properties;
+import java.util.logging.Logger;
+
+@Configuration()
+@EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
+@EnableWebMvc
+@EnableTransactionManagement
+@EnableAspectJAutoProxy
+@EnableJpaRepositories
+@ComponentScan(&quot;com.project.demo&quot;)
+@PropertySource({ &quot;classpath:application.properties&quot; })
+<span class="fc" id="L32">public class AppConfiguration implements WebMvcConfigurer {</span>
+
+	@Autowired
+	private Environment env;
+	
+<span class="fc" id="L37">	private Logger logger = Logger.getLogger(getClass().getName());</span>
+
+	@Bean
+	public DataSource myDataSource() {
+		
+		// create connection pool
+<span class="fc" id="L43">		ComboPooledDataSource myDataSource = new ComboPooledDataSource();</span>
+
+		// set the jdbc driver
+		try {
+<span class="fc" id="L47">			myDataSource.setDriverClass(&quot;com.mysql.jdbc.Driver&quot;);		</span>
+		}
+<span class="nc" id="L49">		catch (PropertyVetoException exc) {</span>
+<span class="nc" id="L50">			throw new RuntimeException(exc);</span>
+<span class="fc" id="L51">		}</span>
+		
+		// for sanity's sake, let's log url and user ... just to make sure we are reading the data
+<span class="fc" id="L54">		logger.info(&quot;jdbc.url=&quot; + env.getProperty(&quot;jdbc.url&quot;));</span>
+<span class="fc" id="L55">		logger.info(&quot;jdbc.user=&quot; + env.getProperty(&quot;jdbc.user&quot;));</span>
+		
+		// set database connection props
+<span class="fc" id="L58">		myDataSource.setJdbcUrl(env.getProperty(&quot;jdbc.url&quot;));</span>
+<span class="fc" id="L59">		myDataSource.setUser(env.getProperty(&quot;jdbc.user&quot;));</span>
+<span class="fc" id="L60">		myDataSource.setPassword(env.getProperty(&quot;jdbc.password&quot;));</span>
+		
+		// set connection pool props
+<span class="fc" id="L63">		myDataSource.setInitialPoolSize(getIntProperty(&quot;connection.pool.initialPoolSize&quot;));</span>
+<span class="fc" id="L64">		myDataSource.setMinPoolSize(getIntProperty(&quot;connection.pool.minPoolSize&quot;));</span>
+<span class="fc" id="L65">		myDataSource.setMaxPoolSize(getIntProperty(&quot;connection.pool.maxPoolSize&quot;));		</span>
+<span class="fc" id="L66">		myDataSource.setMaxIdleTime(getIntProperty(&quot;connection.pool.maxIdleTime&quot;));</span>
+
+<span class="fc" id="L68">		return myDataSource;</span>
+	}
+	
+	private Properties getHibernateProperties() {
+
+		// set hibernate properties
+<span class="fc" id="L74">		Properties props = new Properties();</span>
+
+<span class="fc" id="L76">		props.setProperty(&quot;hibernate.dialect&quot;, env.getProperty(&quot;hibernate.dialect&quot;));</span>
+<span class="fc" id="L77">		props.setProperty(&quot;hibernate.show_sql&quot;, env.getProperty(&quot;hibernate.show_sql&quot;));</span>
+		
+<span class="fc" id="L79">		return props;				</span>
+	}
+
+	
+	// need a helper method 
+	// read environment property and convert to int
+	
+	private int getIntProperty(String propName) {
+		
+<span class="fc" id="L88">		String propVal = env.getProperty(propName);</span>
+		
+		// now convert to int
+<span class="fc" id="L91">		int intPropVal = Integer.parseInt(propVal);</span>
+		
+<span class="fc" id="L93">		return intPropVal;</span>
+	}	
+	
+	@Bean(name=&quot;entityManagerFactory&quot;)
+	public LocalSessionFactoryBean sessionFactory()
+	{
+		// create session factory
+<span class="fc" id="L100">		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();</span>
+
+		// set the properties
+<span class="fc" id="L103">		sessionFactory.setDataSource(myDataSource());</span>
+<span class="fc" id="L104">		sessionFactory.setPackagesToScan(env.getProperty(&quot;hibernate.packagesToScan&quot;));</span>
+<span class="fc" id="L105">		sessionFactory.setHibernateProperties(getHibernateProperties());</span>
+
+<span class="fc" id="L107">		return sessionFactory;</span>
+	}
+	
+	@Bean
+	@Autowired
+	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+		
+		// setup transaction manager based on session factory
+<span class="fc" id="L115">		HibernateTransactionManager txManager = new HibernateTransactionManager();</span>
+<span class="fc" id="L116">		txManager.setSessionFactory(sessionFactory);</span>
+
+<span class="fc" id="L118">		return txManager;</span>
+	}	
+	
+}
+
+
+
+
+
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

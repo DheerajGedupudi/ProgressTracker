@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.project.demo.controller</a> &gt; <span class="el_source">EmployeeController.java</span></div><h1>EmployeeController.java</h1><pre class="source lang-java linenums">package com.project.demo.controller;
+
+import com.project.demo.entity.Ticket;
+import com.project.demo.entity.User;
+import com.project.demo.entity.UserDetail;
+import com.project.demo.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
+
+@Controller
+@RequestMapping(&quot;/manager&quot;)
+<span class="fc" id="L17">public class EmployeeController</span>
+{
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserDetailService userDetailService;
+
+    @Autowired
+    private TicketService ticketService;
+
+    @Autowired
+    private AuthorityService authorityService;
+
+    @GetMapping(&quot;/list&quot;)
+    public String listTheEmployees(Model myModel)
+    {
+<span class="nc" id="L34">        List&lt;User&gt; details = userService.getOnlyEmployees();</span>
+
+<span class="nc" id="L36">        myModel.addAttribute(&quot;employees&quot;, details);</span>
+
+<span class="nc" id="L38">        return &quot;list-users&quot;;</span>
+    }
+
+    @GetMapping(&quot;/showFormToAdd&quot;)
+    public String showFormToAdd(Model myModel)
+    {
+<span class="nc" id="L44">        UserDetail myDetail = new UserDetail();</span>
+
+<span class="nc" id="L46">        myModel.addAttribute(&quot;employee&quot;, myDetail);</span>
+
+<span class="nc" id="L48">        return &quot;employee-form&quot;;</span>
+    }
+
+    @PostMapping(&quot;/save&quot;)
+    public String saveEmployee(@ModelAttribute(&quot;employee&quot;) User myDetail)
+    {
+<span class="nc" id="L54">        userService.saveUser(myDetail);</span>
+
+<span class="nc" id="L56">        return &quot;redirect:/manager/list&quot;;</span>
+    }
+
+
+    @GetMapping(&quot;/promote/{username}&quot;)
+    public String promoteEmployee(@PathVariable String username)
+    {
+<span class="nc" id="L63">        User user = userService.getUserInfo(username);</span>
+
+<span class="nc" id="L65">        authorityService.makeManagerAuthority(user);</span>
+
+<span class="nc" id="L67">        return &quot;redirect:/manager/list&quot;;</span>
+    }
+
+    @GetMapping(&quot;/showFormToUpdate&quot;)
+    public String showFormToUpdate(@RequestParam(&quot;employeeId&quot;) String username, Model myModel)
+    {
+<span class="nc" id="L73">        User myDetail = userService.getUser(username);</span>
+
+<span class="nc" id="L75">        myModel.addAttribute(&quot;employee&quot;, myDetail);</span>
+
+<span class="nc" id="L77">        return &quot;employee-form&quot;;</span>
+    }
+
+    @GetMapping(&quot;/delete/{username}&quot;)
+    public String delete(@PathVariable String username, Principal myPrincipal, Model myModel)
+    {
+<span class="nc" id="L83">        String currentUsername = myPrincipal.getName();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (currentUsername.equals(username))</span>
+        {
+<span class="nc" id="L86">            return &quot;cannot-delete-user&quot;;</span>
+        }
+
+<span class="nc" id="L89">        List&lt;Ticket&gt; ticketsAssigned = ticketService.getTicketsAssignedTo(username);</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (ticketsAssigned.size()&gt;0)</span>
+        {
+<span class="nc" id="L93">            myModel.addAttribute(&quot;myUser&quot;, username);</span>
+<span class="nc" id="L94">            return &quot;cannot-delete-user-tickets-present&quot;;</span>
+        }
+
+<span class="nc" id="L97">        UserDetail myUserDetail = userService.getUserDetailId(username);</span>
+<span class="nc" id="L98">        User myUser = userService.getUser(username);</span>
+        //delete
+<span class="nc" id="L100">        authorityService.deleteAllAuthoritiesOf(myUser);</span>
+<span class="nc" id="L101">        userService.deleteUser(myUser);</span>
+<span class="nc" id="L102">        userDetailService.deleteDetail(myUserDetail);</span>
+
+
+<span class="nc" id="L105">        return &quot;redirect:/manager/list&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

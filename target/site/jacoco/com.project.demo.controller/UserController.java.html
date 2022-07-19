@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.project.demo.controller</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.project.demo.controller;
+
+import com.project.demo.entity.User;
+import com.project.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequestMapping(&quot;/manager/users&quot;)
+<span class="fc" id="L14">public class UserController</span>
+{
+    @Autowired
+    private UserService userService;
+
+    @GetMapping(&quot;/list&quot;)
+    public String listTheEmployees(Model myModel)
+    {
+<span class="nc" id="L22">        List&lt;User&gt; users = userService.getUsers();</span>
+
+<span class="nc" id="L24">        myModel.addAttribute(&quot;employees&quot;, users);</span>
+
+<span class="nc" id="L26">        return &quot;list-user-ids&quot;;</span>
+    }
+
+    @GetMapping(&quot;/showFormToAdd&quot;)
+    public String showFormToAdd(Model myModel)
+    {
+<span class="nc" id="L32">        User myUser = new User();</span>
+
+<span class="nc" id="L34">        myModel.addAttribute(&quot;employee&quot;, myUser);</span>
+
+<span class="nc" id="L36">        return &quot;employee-form&quot;;</span>
+    }
+
+    @PostMapping(&quot;/save23&quot;)
+    public String saveEmployee(@ModelAttribute(&quot;employee&quot;) User myUser)
+    {
+<span class="nc" id="L42">        userService.saveUser(myUser);</span>
+
+<span class="nc" id="L44">        return &quot;redirect:/manager/users/list&quot;;</span>
+    }
+
+    @GetMapping(&quot;/showFormToUpdate&quot;)
+    public String showFormToUpdate(@RequestParam(&quot;employeeId&quot;) String username, Model myModel)
+    {
+<span class="nc" id="L50">        User myUser = userService.getUser(username);</span>
+
+<span class="nc" id="L52">        myModel.addAttribute(&quot;employee&quot;, myUser);</span>
+
+<span class="nc" id="L54">        return &quot;employee-form&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

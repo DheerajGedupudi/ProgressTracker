@@ -1,0 +1,3 @@
+com.project.application.service.AuthorityServiceImplementation#getByIdUsernameAndAuthority(Lcom/project/application/entity/User;Ljava/lang/String;)Lcom/project/application/entity/Authority;
+com.project.application.entity.id.AuthorityId#instance-init#
+com.project.application.entity.id.AuthorityId#<init>(Lcom/project/application/entity/User;Ljava/lang/String;)V

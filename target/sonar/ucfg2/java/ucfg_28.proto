@@ -1,0 +1,21 @@
+
+\com.project.application.service.UserDetailServiceImplementation#getDetails()Ljava/util/List;•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (&"1*Ó
+1•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (#¸
+µ
+•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (#6
+%00com.project.application.dao.UserDetailRepository"__id*]*[A
+?com.project.application.service.UserDetailServiceImplementation"
+userDetailRepositoryÇÄ
+•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (-
+%1java.util.List"Oorg.springframework.data.jpa.repository.JpaRepository#findAll()Ljava/util/List;*8
+6
+%00com.project.application.dao.UserDetailRepository2	findAll()"°
+•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (.
+
+%1java.util.ListBCA
+?com.project.application.service.UserDetailServiceImplementation

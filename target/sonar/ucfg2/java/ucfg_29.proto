@@ -1,0 +1,23 @@
+
+wcom.project.application.service.UserDetailServiceImplementation#getDetail(I)Lcom/project/application/entity/UserDetail;•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java ("1*É
+1•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (#¸
+µ
+•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (#6
+%00com.project.application.dao.UserDetailRepository"__id*]*[A
+?com.project.application.service.UserDetailServiceImplementation"
+userDetailRepository¢Ÿ
+•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (8/
+%1)com.project.application.entity.UserDetail"lorg.springframework.data.jpa.repository.JpaRepository#getReferenceById(Ljava/lang/Object;)Ljava/lang/Object;*8
+6
+%00com.project.application.dao.UserDetailRepository*
+""2$getReferenceById(Ljava/lang/Object;)"Ë
+•
+Š/home/dheerG/IdeaProjects/SPRING PROJECT/Spring Project/src/main/java/com/project/application/service/UserDetailServiceImplementation.java (91
+/
+%1)com.project.application.entity.UserDetail:
+""BCA
+?com.project.application.service.UserDetailServiceImplementation

@@ -1,0 +1,1 @@
+com.project.application.service.UserServiceImplementation#getUserDetailId(Ljava/lang/String;)Lcom/project/application/entity/UserDetail;

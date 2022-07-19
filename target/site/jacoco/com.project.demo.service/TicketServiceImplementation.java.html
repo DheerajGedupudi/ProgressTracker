@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TicketServiceImplementation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demo</a> &gt; <a href="index.source.html" class="el_package">com.project.demo.service</a> &gt; <span class="el_source">TicketServiceImplementation.java</span></div><h1>TicketServiceImplementation.java</h1><pre class="source lang-java linenums">package com.project.demo.service;
+
+import com.project.demo.dao.TicketRepository;
+import com.project.demo.entity.Ticket;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L13">public class TicketServiceImplementation implements TicketService</span>
+{
+    @Autowired
+    private TicketRepository ticketRepository;
+
+    @Override
+    public List&lt;Ticket&gt; getAllTickets()
+    {
+<span class="fc" id="L21">        return ticketRepository.findAll();</span>
+    }
+
+    @Override
+    public Ticket getTicket(int id)
+    {
+<span class="fc" id="L27">        Optional&lt;Ticket&gt; optionalTicket =  ticketRepository.findById(id);</span>
+
+<span class="fc" id="L29">        Ticket myTicket = null;</span>
+
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">        if (optionalTicket.isPresent())</span>
+        {
+<span class="fc" id="L33">            myTicket = optionalTicket.get();</span>
+        }
+
+<span class="fc" id="L36">        return myTicket;</span>
+    }
+
+    @Override
+    public List&lt;Ticket&gt; getTicketsAssignedTo(String username)
+    {
+<span class="fc" id="L42">        return ticketRepository.findByAssignedToUserName(username);</span>
+    }
+
+
+    @Override
+    public List&lt;Ticket&gt; getTicketsAssignedBy(String username)
+    {
+<span class="fc" id="L49">        return ticketRepository.findByAssignedByUserName(username);</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getStatusList()
+    {
+<span class="fc" id="L55">        List&lt;String&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L56">        list.add(&quot;To Do&quot;);</span>
+<span class="fc" id="L57">        list.add(&quot;In Progress&quot;);</span>
+<span class="fc" id="L58">        list.add(&quot;Done&quot;);</span>
+
+<span class="fc" id="L60">        return list;</span>
+    }
+
+    @Override
+    public void saveTicket(Ticket ticket)
+    {
+<span class="fc" id="L66">        ticketRepository.save(ticket);</span>
+<span class="fc" id="L67">    }</span>
+
+    @Override
+    public void deleteTicket(int id)
+    {
+<span class="fc" id="L72">        ticketRepository.deleteById(id);</span>
+<span class="fc" id="L73">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

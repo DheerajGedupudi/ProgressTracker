@@ -1,0 +1,3 @@
+com.project.application.service.TicketServiceImplementation#getStatusList()Ljava/util/List;
+java.util.ArrayList#<init>()V
+java.util.ArrayList#instance-init#

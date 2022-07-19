@@ -1,0 +1,3 @@
+com.project.application.service.UserServiceImplementation#getManagers()Ljava/util/List;
+java.util.ArrayList#<init>()V
+java.util.ArrayList#instance-init#

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringProject</a> &gt; <a href="index.source.html" class="el_package">com.project.application.entity</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.project.application.entity;
+
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
+@Table(name = &quot;users&quot;)
+public class User
+{
+    @Id
+    @Column(name = &quot;username&quot;)
+    private String userName;
+
+    @Column(name = &quot;password&quot;)
+    private String password;
+
+    @Column(name = &quot;enabled&quot;)
+    private int enabled;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = &quot;user_detail_id&quot;)
+    private UserDetail userDetail;
+
+
+<span class="nc" id="L25">    public User() {</span>
+<span class="nc" id="L26">    }</span>
+
+<span class="fc" id="L28">    public User(String userName, String password, int enabled, UserDetail userDetail) {</span>
+<span class="fc" id="L29">        this.userName = userName;</span>
+<span class="fc" id="L30">        this.password = password;</span>
+<span class="fc" id="L31">        this.enabled = enabled;</span>
+<span class="fc" id="L32">        this.userDetail = userDetail;</span>
+<span class="fc" id="L33">    }</span>
+
+    public String getUserName() {
+<span class="fc" id="L36">        return userName;</span>
+    }
+
+    public void setUserName(String userName) {
+<span class="nc" id="L40">        this.userName = userName;</span>
+<span class="nc" id="L41">    }</span>
+
+    public String getPassword() {
+<span class="nc" id="L44">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="nc" id="L48">        this.password = password;</span>
+<span class="nc" id="L49">    }</span>
+
+    public UserDetail getUserDetail() {
+<span class="nc" id="L52">        return userDetail;</span>
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+<span class="nc" id="L56">        this.userDetail = userDetail;</span>
+<span class="nc" id="L57">    }</span>
+
+    public int getEnabled() {
+<span class="nc" id="L60">        return enabled;</span>
+    }
+
+    public void setEnabled(int enabled) {
+<span class="nc" id="L64">        this.enabled = enabled;</span>
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L70" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L71">        User user = (User) o;</span>
+<span class="nc bnc" id="L72" title="All 8 branches missed.">        return enabled == user.enabled &amp;&amp; Objects.equals(userName, user.userName) &amp;&amp; Objects.equals(password, user.password) &amp;&amp; Objects.equals(userDetail, user.userDetail);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L77">        return Objects.hash(userName, password, enabled, userDetail);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L82">        return &quot;User{&quot; +</span>
+                &quot;userName='&quot; + userName + '\'' +
+                &quot;, password='&quot; + password + '\'' +
+                &quot;, enabled=&quot; + enabled +
+                &quot;, userDetail=&quot; + userDetail +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
